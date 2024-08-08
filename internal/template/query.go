@@ -67,7 +67,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 
 type queryCtx struct{ 
 	{{range $name,$d :=.Data -}}
-	{{$d.ModelStructName}} {{$d.ReturnObject}}
+	{{$d.ModelStructName}}Exported {{$d.ReturnObject}}
 	{{end}}
 }
 

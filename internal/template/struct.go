@@ -175,33 +175,33 @@ func ({{.S}} *{{.QueryStructName}}) fillFieldMap() {
 	defineDoInterface = `
 
 type I{{.ModelStructName}}Base interface {
-Debug() I{{.ModelStructName}}Do
-	WithContext(ctx context.Context) I{{.ModelStructName}}Do
+	Debug() I{{.ModelStructName}}Exported
+	WithContext(ctx context.Context) I{{.ModelStructName}}Exported
 	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
 	ReplaceDB(db *gorm.DB)
-	ReadDB() I{{.ModelStructName}}Do
-	WriteDB() I{{.ModelStructName}}Do
+	ReadDB() I{{.ModelStructName}}Exported
+	WriteDB() I{{.ModelStructName}}Exported
 	As(alias string) gen.Dao
-	Session(config *gorm.Session) I{{.ModelStructName}}Do
+	Session(config *gorm.Session) I{{.ModelStructName}}Exported
 	Columns(cols ...field.Expr) gen.Columns
-	Clauses(conds ...clause.Expression) I{{.ModelStructName}}Do
-	Not(conds ...gen.Condition) I{{.ModelStructName}}Do
-	Or(conds ...gen.Condition) I{{.ModelStructName}}Do
-	Select(conds ...field.Expr) I{{.ModelStructName}}Do
-	Where(conds ...gen.Condition) I{{.ModelStructName}}Do
-	Order(conds ...field.Expr) I{{.ModelStructName}}Do
-	Distinct(cols ...field.Expr) I{{.ModelStructName}}Do
-	Omit(cols ...field.Expr) I{{.ModelStructName}}Do
-	Join(table schema.Tabler, on ...field.Expr) I{{.ModelStructName}}Do
-	LeftJoin(table schema.Tabler, on ...field.Expr) I{{.ModelStructName}}Do
-	RightJoin(table schema.Tabler, on ...field.Expr) I{{.ModelStructName}}Do
-	Group(cols ...field.Expr) I{{.ModelStructName}}Do
-	Having(conds ...gen.Condition) I{{.ModelStructName}}Do
-	Limit(limit int) I{{.ModelStructName}}Do
-	Offset(offset int) I{{.ModelStructName}}Do
+	Clauses(conds ...clause.Expression) I{{.ModelStructName}}Exported
+	Not(conds ...gen.Condition) I{{.ModelStructName}}Exported
+	Or(conds ...gen.Condition) I{{.ModelStructName}}Exported
+	Select(conds ...field.Expr) I{{.ModelStructName}}Exported
+	Where(conds ...gen.Condition) I{{.ModelStructName}}Exported
+	Order(conds ...field.Expr) I{{.ModelStructName}}Exported
+	Distinct(cols ...field.Expr) I{{.ModelStructName}}Exported
+	Omit(cols ...field.Expr) I{{.ModelStructName}}Exported
+	Join(table schema.Tabler, on ...field.Expr) I{{.ModelStructName}}Exported
+	LeftJoin(table schema.Tabler, on ...field.Expr) I{{.ModelStructName}}Exported
+	RightJoin(table schema.Tabler, on ...field.Expr) I{{.ModelStructName}}Exported
+	Group(cols ...field.Expr) I{{.ModelStructName}}Exported
+	Having(conds ...gen.Condition) I{{.ModelStructName}}Exported
+	Limit(limit int) I{{.ModelStructName}}Exported
+	Offset(offset int) I{{.ModelStructName}}Exported
 	Count() (count int64, err error)
-	Scopes(funcs ...func(gen.Dao) gen.Dao) I{{.ModelStructName}}Do
-	Unscoped() I{{.ModelStructName}}Do
+	Scopes(funcs ...func(gen.Dao) gen.Dao) I{{.ModelStructName}}Exported
+	Unscoped() I{{.ModelStructName}}Exported
 	Create(values ...*{{.StructInfo.Package}}.{{.StructInfo.Type}}) error
 	CreateInBatches(values []*{{.StructInfo.Package}}.{{.StructInfo.Type}}, batchSize int) error
 	Save(values ...*{{.StructInfo.Package}}.{{.StructInfo.Type}}) error
@@ -220,16 +220,16 @@ Debug() I{{.ModelStructName}}Do
 	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
 	UpdateFrom(q gen.SubQuery) gen.Dao
-	Attrs(attrs ...field.AssignExpr) I{{.ModelStructName}}Do
-	Assign(attrs ...field.AssignExpr) I{{.ModelStructName}}Do
-	Joins(fields ...field.RelationField) I{{.ModelStructName}}Do
-	Preload(fields ...field.RelationField) I{{.ModelStructName}}Do
+	Attrs(attrs ...field.AssignExpr) I{{.ModelStructName}}Exported
+	Assign(attrs ...field.AssignExpr) I{{.ModelStructName}}Exported
+	Joins(fields ...field.RelationField) I{{.ModelStructName}}Exported
+	Preload(fields ...field.RelationField) I{{.ModelStructName}}Exported
 	FirstOrInit() (*{{.StructInfo.Package}}.{{.StructInfo.Type}}, error)
 	FirstOrCreate() (*{{.StructInfo.Package}}.{{.StructInfo.Type}}, error)
 	FindByPage(offset int, limit int) (result []*{{.StructInfo.Package}}.{{.StructInfo.Type}}, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
-	Returning(value interface{}, columns ...string) I{{.ModelStructName}}Do
+	Returning(value interface{}, columns ...string) I{{.ModelStructName}}Exported
 	UnderlyingDB() *gorm.DB
 }
 
@@ -242,6 +242,7 @@ type I{{.ModelStructName}}Specific interface {
 type I{{.ModelStructName}}Exported interface {
 	I{{.ModelStructName}}Base
 	I{{.ModelStructName}}Specific
+	gen.Condition
 }
 
 

@@ -394,7 +394,7 @@ func (g *Generator) generateSingleQueryFile(data *genInfo) (err error) {
 		return err
 	}
 
-	data.QueryStructMeta = data.QueryStructMeta.IfaceMode(g.judgeMode(WithQueryInterface))
+	data.QueryStructMeta = data.QueryStructMeta.IfaceMode(g.judgeMode(WithQueryInterface), true)
 
 	structTmpl := tmpl.TableQueryStructWithContext
 	if g.judgeMode(WithoutContext) {

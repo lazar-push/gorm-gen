@@ -40,6 +40,7 @@ type QueryStructMeta struct {
 	ModelMethods    []*parser.Method // user custom method bind to db base struct
 
 	interfaceMode bool
+	exportMode    bool
 }
 
 // parseStruct get all elements of struct with gorm's Parse, ignore unexported elements
@@ -222,16 +223,21 @@ func (b *QueryStructMeta) addMethodFromAddMethodOpt(methods ...interface{}) *Que
 }
 
 // IfaceMode object mode
-func (b QueryStructMeta) IfaceMode(on bool) *QueryStructMeta {
+func (b QueryStructMeta) IfaceMode(on, export bool) *QueryStructMeta {
 	b.interfaceMode = on
+	b.exportMode = export
 	return &b
 }
 
 // ReturnObject return object in generated code
 func (b *QueryStructMeta) ReturnObject() string {
 	if b.interfaceMode {
+		if b.exportMode {
+			return fmt.Sprint("I", b.ModelStructName, "Exported")
+		}
 		return fmt.Sprint("I", b.ModelStructName, "Do")
 	}
+
 	return fmt.Sprint("*", b.QueryStructName, "Do")
 }
 
