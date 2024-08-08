@@ -47,8 +47,8 @@ gorm.io/driver/sqlite v1.1.6/go.mod h1:W8LmC/6UvVbHKah0+QOC7Ja66EaZXHwUTjgXY8YNW
 gorm.io/driver/sqlite v1.5.5 h1:7MDMtUZhV065SilG62E0MquljeArQZNfJnjd9i9gx3E=
 gorm.io/driver/sqlite v1.5.5/go.mod h1:6NgQ7sQWAIFsPrJJl1lSNSu2TABh0ZZ/zm5fosATavE=
 gorm.io/driver/sqlserver v1.4.1 h1:t4r4r6Jam5E6ejqP7N82qAJIJAht27EGT41HyPfXRw0=
-gorm.io/gen v0.3.25 h1:uT/1YfvcnYUdike4XPYyi89FEnVHZF115GUXQm2Sfug=
-gorm.io/gen v0.3.25/go.mod h1:p+t0iCKjaPz+pKRxcx63nXdRgnrah/QD2l92747ihyA=
+github.com/lazar-push/gorm-gen v0.3.25 h1:uT/1YfvcnYUdike4XPYyi89FEnVHZF115GUXQm2Sfug=
+github.com/lazar-push/gorm-gen v0.3.25/go.mod h1:p+t0iCKjaPz+pKRxcx63nXdRgnrah/QD2l92747ihyA=
 gorm.io/gorm v1.21.15/go.mod h1:F+OptMscr0P2F2qU97WT1WimdH9GaQPoDW7AYd5i2Y0=
 gorm.io/gorm v1.22.2/go.mod h1:F+OptMscr0P2F2qU97WT1WimdH9GaQPoDW7AYd5i2Y0=
 gorm.io/gorm v1.23.8/go.mod h1:l2lP/RyAtc1ynaTjFksBde/O8v9oOGIApu2/xRitmZk=

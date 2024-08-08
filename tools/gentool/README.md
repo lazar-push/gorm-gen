@@ -5,7 +5,7 @@ Install GEN as a binary tool
 ## install
 
 ```shell
- go install gorm.io/gen/tools/gentool@latest
+ go install github.com/lazar-push/gorm-gen/tools/gentool@latest
 ```
 
 ## usage

@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/lazar-push/gorm-gen"
 	"gopkg.in/yaml.v3"
 	"gorm.io/driver/clickhouse"
 	"gorm.io/driver/mysql"

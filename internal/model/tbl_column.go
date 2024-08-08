@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"gorm.io/gen/field"
+	"github.com/lazar-push/gorm-gen/field"
 	"gorm.io/gorm"
 )
 

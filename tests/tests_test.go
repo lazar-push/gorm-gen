@@ -5,9 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
+	gen "github.com/lazar-push/gorm-gen"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
-	"gorm.io/gen"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
