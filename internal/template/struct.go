@@ -29,15 +29,15 @@ const (
 
 	` + getFieldMethod + fillFieldMapMethod + cloneMethod + replaceMethod + relationship + defineMethodStruct + `
 	type {{.QueryStructName}}AsMethod struct {
-		contact
+		{{.QueryStructName}}
 	}
 
-	func New{{.QueryStructName}}AsMethod(contact contact) *{{.QueryStructName}}AsMethod {
-		return &{{.QueryStructName}}AsMethod{contact}
+	func New{{.QueryStructName}}AsMethod({{.QueryStructName}} {{.QueryStructName}}) *{{.QueryStructName}}AsMethod {
+		return &{{.QueryStructName}}AsMethod{{{.QueryStructName}}}
 	}
 
 	func (c {{.QueryStructName}}AsMethod) As(alias string) gen.Dao {
-		return c.contactDo.As(alias)
+		return c.{{.QueryStructName}}Do.As(alias)
 	}
 	`
 
