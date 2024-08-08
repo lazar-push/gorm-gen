@@ -8,7 +8,19 @@ const (
 		{{.QueryStructName}}Do
 		` + fields + `
 	}
-	` + tableMethod + asMethond + updateFieldMethod + getFieldMethod + fillFieldMapMethod + cloneMethod + replaceMethod + relationship + defineMethodStruct
+	` + tableMethod + asMethond + updateFieldMethod + getFieldMethod + fillFieldMapMethod + cloneMethod + replaceMethod + relationship + defineMethodStruct + `
+	type {{.QueryStructName}}AsMethod struct {
+		{{.QueryStructName}}
+	}
+
+	func New{{.QueryStructName}}AsMethod({{.QueryStructName}} {{.QueryStructName}}) *{{.QueryStructName}}AsMethod {
+		return &{{.QueryStructName}}AsMethod{{{.QueryStructName}}}
+	}
+
+	func (c {{.QueryStructName}}AsMethod) As(alias string) gen.Dao {
+		return c.{{.QueryStructName}}Do.As(alias)
+	}
+	`
 
 	// TableQueryStructWithContext table query struct with context
 	TableQueryStructWithContext = createMethod + `
