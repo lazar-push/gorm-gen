@@ -9,6 +9,7 @@ const (
 		` + fields + `
 	}
 	` + tableMethod + asMethond + updateFieldMethod + getFieldMethod + fillFieldMapMethod + cloneMethod + replaceMethod + relationship + defineMethodStruct + `
+
 	type {{.QueryStructName}}AsMethod struct {
 		{{.QueryStructName}}
 	}
@@ -20,6 +21,7 @@ const (
 	func (c {{.QueryStructName}}AsMethod) As(alias string) gen.Dao {
 		return c.{{.QueryStructName}}Do.As(alias)
 	}
+
 	`
 
 	// TableQueryStructWithContext table query struct with context
@@ -40,6 +42,7 @@ const (
 	func ({{.S}} {{.QueryStructName}}) Columns(cols ...field.Expr) gen.Columns { return {{.S}}.{{.QueryStructName}}Do.Columns(cols...) }
 
 	` + getFieldMethod + fillFieldMapMethod + cloneMethod + replaceMethod + relationship + defineMethodStruct + `
+
 	type {{.QueryStructName}}AsMethod struct {
 		{{.QueryStructName}}
 	}
@@ -51,6 +54,7 @@ const (
 	func (c {{.QueryStructName}}AsMethod) As(alias string) gen.Dao {
 		return c.{{.QueryStructName}}Do.As(alias)
 	}
+	
 	`
 
 	// TableQueryIface table query interface
