@@ -15,7 +15,7 @@ const (
 	}
 
 	func New{{.QueryStructName}}AsMethod({{.QueryStructName}} {{.QueryStructName}}) *{{.QueryStructName}}AsMethod {
-		return &{{.QueryStructName}}AsMethod{{{.QueryStructName}}}
+		return &{{.QueryStructName}}AsMethod{ {{.QueryStructName}} }
 	}
 
 	func (c {{.QueryStructName}}AsMethod) As(alias string) gen.Dao {
