@@ -174,9 +174,8 @@ func ({{.S}} *{{.QueryStructName}}) fillFieldMap() {
 
 	defineDoInterface = `
 
-type I{{.ModelStructName}}Do interface {
-	gen.SubQuery
-	Debug() I{{.ModelStructName}}Do
+type I{{.ModelStructName}}Base interface {
+Debug() I{{.ModelStructName}}Do
 	WithContext(ctx context.Context) I{{.ModelStructName}}Do
 	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
 	ReplaceDB(db *gorm.DB)
@@ -232,11 +231,25 @@ type I{{.ModelStructName}}Do interface {
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) I{{.ModelStructName}}Do
 	UnderlyingDB() *gorm.DB
-	schema.Tabler
+}
 
+type I{{.ModelStructName}}Specific interface {
 	{{range .Interfaces -}}
 	{{.FuncSign}}
 	{{end}}
+}
+
+type I{{.ModelStructName}}Exported interface {
+	I{{.ModelStructName}}Base
+	I{{.ModelStructName}}Specific
+}
+
+
+type I{{.ModelStructName}}Do interface {
+	gen.SubQuery
+	schema.Tabler
+
+	I{{.ModelStructName}}Exported
 }
 `
 )
