@@ -27,7 +27,19 @@ const (
 
 	func ({{.S}} {{.QueryStructName}}) Columns(cols ...field.Expr) gen.Columns { return {{.S}}.{{.QueryStructName}}Do.Columns(cols...) }
 
-	` + getFieldMethod + fillFieldMapMethod + cloneMethod + replaceMethod + relationship + defineMethodStruct
+	` + getFieldMethod + fillFieldMapMethod + cloneMethod + replaceMethod + relationship + defineMethodStruct + `
+	type {{.QueryStructName}}AsMethod struct {
+		contact
+	}
+
+	func New{{.QueryStructName}}AsMethod(contact contact) *{{.QueryStructName}}AsMethod {
+		return &{{.QueryStructName}}AsMethod{contact}
+	}
+
+	func (c {{.QueryStructName}}AsMethod) As(alias string) gen.Dao {
+		return c.contactDo.As(alias)
+	}
+	`
 
 	// TableQueryIface table query interface
 	TableQueryIface = defineDoInterface
