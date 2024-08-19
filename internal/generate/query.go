@@ -246,7 +246,7 @@ func isStructType(data reflect.Value) bool {
 		(data.Kind() == reflect.Ptr && data.Elem().Kind() == reflect.Struct)
 }
 
-func pullRelationShip(cache map[string]bool, relationships []*schema.Relationship) []field.Relation {
+func pullRelationShip(cache map[string]bool, relationCache map[string][]field.Relation, relationships []*schema.Relationship) []field.Relation {
 	if len(relationships) == 0 {
 		return nil
 	}
@@ -256,13 +256,17 @@ func pullRelationShip(cache map[string]bool, relationships []*schema.Relationshi
 		varType := strings.TrimLeft(relationship.Field.FieldType.String(), "[]*")
 		if !cache[varType] {
 			cache[varType] = true
-			childRelations = pullRelationShip(cache, append(append(append(append(
+			childRelations = pullRelationShip(cache, relationCache, append(append(append(append(
 				make([]*schema.Relationship, 0, 4),
 				relationship.FieldSchema.Relationships.BelongsTo...),
 				relationship.FieldSchema.Relationships.HasOne...),
 				relationship.FieldSchema.Relationships.HasMany...),
 				relationship.FieldSchema.Relationships.Many2Many...),
 			)
+			relationCache[varType] = childRelations
+
+		} else {
+			childRelations = relationCache[varType]
 		}
 		result[i] = *field.NewRelationWithType(field.RelationshipType(relationship.Type), relationship.Name, varType, childRelations...)
 	}
