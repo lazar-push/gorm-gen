@@ -246,29 +246,64 @@ func isStructType(data reflect.Value) bool {
 		(data.Kind() == reflect.Ptr && data.Elem().Kind() == reflect.Struct)
 }
 
-func pullRelationShip(cache map[string]bool, relationCache map[string][]field.Relation, relationships []*schema.Relationship) []field.Relation {
+type incompleteCb struct {
+	result       *field.Relation
+	relationship *schema.Relationship
+	incomplete   *[]incompleteCb
+}
+
+func (cb *incompleteCb) Call(cache map[string]map[schema.RelationshipType]field.Relation) field.Relation {
+	varType := strings.TrimLeft(cb.relationship.Field.FieldType.String(), "[]*")
+	childRelations := pullRelationShip(cache, cb.incomplete,
+		append(append(append(append(
+			make([]*schema.Relationship, 0, 4),
+			cb.relationship.FieldSchema.Relationships.BelongsTo...),
+			cb.relationship.FieldSchema.Relationships.HasOne...),
+			cb.relationship.FieldSchema.Relationships.HasMany...),
+			cb.relationship.FieldSchema.Relationships.Many2Many...),
+	)
+	return *field.NewRelationWithType(field.RelationshipType(cb.relationship.Type), cb.relationship.Name, varType, childRelations...)
+}
+
+func pullRelationShip(cache map[string]map[schema.RelationshipType]field.Relation, incomplete *[]incompleteCb, relationships []*schema.Relationship) []field.Relation {
 	if len(relationships) == 0 {
 		return nil
 	}
 	result := make([]field.Relation, len(relationships))
 	for i, relationship := range relationships {
-		var childRelations []field.Relation
+		var (
+			childRelations []field.Relation
+			cacheHit       bool
+			varTypeHit     bool
+		)
 		varType := strings.TrimLeft(relationship.Field.FieldType.String(), "[]*")
-		if !cache[varType] {
-			cache[varType] = true
-			childRelations = pullRelationShip(cache, relationCache, append(append(append(append(
-				make([]*schema.Relationship, 0, 4),
-				relationship.FieldSchema.Relationships.BelongsTo...),
-				relationship.FieldSchema.Relationships.HasOne...),
-				relationship.FieldSchema.Relationships.HasMany...),
-				relationship.FieldSchema.Relationships.Many2Many...),
-			)
-			relationCache[varType] = childRelations
-
-		} else {
-			childRelations = relationCache[varType]
+		_, varTypeHit = cache[varType]
+		if !varTypeHit {
+			cache[varType] = make(map[schema.RelationshipType]field.Relation)
 		}
-		result[i] = *field.NewRelationWithType(field.RelationshipType(relationship.Type), relationship.Name, varType, childRelations...)
+		result[i], cacheHit = cache[varType][relationship.Type]
+		if !cacheHit {
+			// "Lock" the cache so it does not go into infinite recursion
+			cache[varType][relationship.Type] = field.Relation{}
+			childRelations = pullRelationShip(cache, incomplete,
+				append(append(append(append(
+					make([]*schema.Relationship, 0, 4),
+					relationship.FieldSchema.Relationships.BelongsTo...),
+					relationship.FieldSchema.Relationships.HasOne...),
+					relationship.FieldSchema.Relationships.HasMany...),
+					relationship.FieldSchema.Relationships.Many2Many...),
+			)
+			result[i] = *field.NewRelationWithType(field.RelationshipType(relationship.Type), relationship.Name, varType, childRelations...)
+			cache[varType][relationship.Type] = result[i]
+		}
+		if result[i].Name() == "" {
+			result[i] = *field.NewRelationWithType(field.RelationshipType(relationship.Type), relationship.Name, varType)
+			*incomplete = append(*incomplete, incompleteCb{
+				result:       &result[i],
+				relationship: relationship,
+				incomplete:   incomplete,
+			})
+		}
 	}
 	return result
 }
