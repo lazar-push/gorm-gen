@@ -296,13 +296,20 @@ func pullRelationShip(cache map[string]map[schema.RelationshipType]field.Relatio
 			result[i] = *field.NewRelationWithType(field.RelationshipType(relationship.Type), relationship.Name, varType, childRelations...)
 			cache[varType][relationship.Type] = result[i]
 		}
-		if result[i].Name() == "" {
-			result[i] = *field.NewRelationWithType(field.RelationshipType(relationship.Type), relationship.Name, varType)
-			*incomplete = append(*incomplete, incompleteCb{
-				result:       &result[i],
-				relationship: relationship,
-				incomplete:   incomplete,
-			})
+		if result[i].Name() != relationship.Name {
+			result[i] = *field.NewRelationWithType(
+				field.RelationshipType(relationship.Type),
+				relationship.Name,
+				varType,
+				result[i].ChildRelations()...,
+			)
+			if result[i].Name() == "" {
+				*incomplete = append(*incomplete, incompleteCb{
+					result:       &result[i],
+					relationship: relationship,
+					incomplete:   incomplete,
+				})
+			}
 		}
 	}
 	return result
