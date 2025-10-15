@@ -104,6 +104,16 @@ func (r Relation) RelationshipName() string { return ns.SchemaName(string(r.rela
 // ChildRelations return child relations
 func (r Relation) ChildRelations() []Relation { return r.childRelations }
 
+// ChildRelationsNoPrefix return child relations without prefix
+func (r Relation) ChildRelationsNoPrefix() []Relation {
+	result := make([]Relation, len(r.childRelations))
+	copy(result, r.childRelations)
+	for i := range result {
+		result[i].fieldPath = ""
+	}
+	return result
+}
+
 // Field build field
 func (r Relation) Field(fields ...string) Expr {
 	if len(fields) > 0 {
